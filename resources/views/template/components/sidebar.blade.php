@@ -11,8 +11,10 @@
                         class="fas fa-building me-2"></i>Ruang</a>
                 <a href="{{route( 'karyawan.index')}}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
                         class="fas fa-users me-2"></i>Karyawan</a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
-                        class="fas fa-money-bill me-2"></i>Penggajian</a>
+                <a href="{{route( 'pemasok.index')}}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i 
+                        class="fas fa-truck me-2"></i>Pemasok</a>
+                <a href="{{route( 'barang.index')}}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i 
+                        class="fas fa-box me-2"></i>Barang</a>
                 <a href="#" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
                         class="fas fa-power-off me-2"></i>Logout</a>
             </div>

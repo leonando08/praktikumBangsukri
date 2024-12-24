@@ -14,7 +14,13 @@ class BarangController extends Controller
      */
     public function index()
     {
-        //
+    
+            $barangs = Barang::all();
+            return view('barang.index', [
+                "title" => "Barang",
+                "barangs" => $barangs,
+            ]);
+    
     }
 
     /**
@@ -24,7 +30,9 @@ class BarangController extends Controller
      */
     public function create()
     {
-        //
+        return view('barang.create', [
+            "title" => "Barang",
+        ]);
     }
 
     /**
@@ -35,7 +43,15 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            'nama_barang' => 'required|min:3|max:255',
+            'merk' => 'required|min:3|max:255',
+            'tipe' => 'required|min:4|max:255|unique:barang',
+            'satuan' => 'required|min:3|max:255',
+        ]);
+
+        Barang::create($validateData);
+        return redirect('/barang')->with('success','Berhasil tambah data');
     }
 
     /**
@@ -57,7 +73,10 @@ class BarangController extends Controller
      */
     public function edit(Barang $barang)
     {
-        //
+        return view('barang.edit', [
+            "title" => "Barang",
+            "barang" => $barang,
+        ]);
     }
 
     /**
@@ -69,7 +88,22 @@ class BarangController extends Controller
      */
     public function update(Request $request, Barang $barang)
     {
-        //
+        {
+            $request->validate([
+                'nama_barang' => 'required|min:3|max:255',
+                'merk' => 'required|min:3|max:255',
+                'tipe' => 'required|min:4|max:255|unique:barang,tipe,' . $barang->id,
+                'satuan' => 'required|min:3|max:255',
+            ]);
+    
+            $barang->update([
+                'nama_barang' => $request->nama_barang,
+                'merk' => $request->merk,
+                'tipe' => $request->tipe,
+                'satuan' => $request->satuan,
+            ]);
+            return redirect('/barang')->with('success', 'Berhasil ubah data'); 
+        }
     }
 
     /**
@@ -80,6 +114,9 @@ class BarangController extends Controller
      */
     public function destroy(Barang $barang)
     {
-        //
+        {
+            Barang::destroy($barang->id);
+            return redirect('/barang')->with('success', 'Berhasil hapus data');
+        }
     }
 }

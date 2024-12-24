@@ -14,7 +14,11 @@ class PemasokController extends Controller
      */
     public function index()
     {
-        //
+        $pemasoks = Pemasok::all();
+        return view('pemasok.index', [
+            "title" => "Pemasok",
+            "pemasoks" => $pemasoks,
+        ]);
     }
 
     /**
@@ -35,9 +39,16 @@ class PemasokController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validateData = $request->validate([
+            'nama_pemasok' => 'required|min:3|max:255',
+            'nama_kontak' => 'required|min:3|max:255',
+            'nomor_hp' => 'required|min:4|max:255|unique:pemasok',
+            'alamat' => 'required|min:3|max:255',
+        ]);
 
+        Pemasok::create($validateData);
+        return redirect('/pemasok')->with('success','Berhasil tambah data');
+    }
     /**
      * Display the specified resource.
      *
@@ -57,7 +68,10 @@ class PemasokController extends Controller
      */
     public function edit(Pemasok $pemasok)
     {
-        //
+        return view('pemasok.edit', [
+            "title" => "Pemasok",
+            "pemasok" => $pemasok,
+        ]);
     }
 
     /**
@@ -69,7 +83,22 @@ class PemasokController extends Controller
      */
     public function update(Request $request, Pemasok $pemasok)
     {
-        //
+        {
+            $request->validate([
+                'nama_pemasok' => 'required|min:3|max:255',
+                'nama_kontak' => 'required|min:3|max:255',
+                'nomor_hp' => 'required|min:4|max:255|unique:pemasok,nomor_hp,' . $pemasok->id,
+                'alamat' => 'required|min:3|max:255',
+            ]);
+    
+            $pemasok->update([
+                'nama_pemasok' => $request->nama_pemasok,
+                'nama_kontak' => $request->nama_kontak,
+                'nomor_hp' => $request->nomor_hp,
+                'alamat' => $request->alamat,
+            ]);
+            return redirect('/pemasok')->with('success', 'Berhasil ubah data'); 
+        }
     }
 
     /**
@@ -80,6 +109,7 @@ class PemasokController extends Controller
      */
     public function destroy(Pemasok $pemasok)
     {
-        //
+        Pemasok::destroy($pemasok->id);
+        return redirect('/pemasok')->with('success', 'Berhasil hapus data');
     }
 }
